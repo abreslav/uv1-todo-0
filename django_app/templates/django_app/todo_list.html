@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Todoer - Personal Todo App</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -17,6 +18,47 @@
             }
         }
     </script>
+    <style>
+        /* Styling for rendered Markdown content */
+        .todo-content h1, .todo-content h2, .todo-content h3,
+        .todo-content h4, .todo-content h5, .todo-content h6 {
+            font-weight: bold;
+            margin: 0.5em 0 0.25em 0;
+        }
+        .todo-content h1 { font-size: 1.2em; }
+        .todo-content h2 { font-size: 1.1em; }
+        .todo-content h3 { font-size: 1.05em; }
+        .todo-content strong { font-weight: bold; }
+        .todo-content em { font-style: italic; }
+        .todo-content code {
+            background-color: #f3f4f6;
+            padding: 0.125rem 0.25rem;
+            border-radius: 0.25rem;
+            font-size: 0.875em;
+            font-family: monospace;
+        }
+        .todo-content ul, .todo-content ol {
+            margin: 0.5em 0;
+            padding-left: 1.5em;
+        }
+        .todo-content ul { list-style-type: disc; }
+        .todo-content ol { list-style-type: decimal; }
+        .todo-content li { margin: 0.25em 0; }
+        .todo-content p { margin: 0.5em 0; }
+        .todo-content a {
+            color: #3b82f6;
+            text-decoration: underline;
+        }
+        .todo-content blockquote {
+            border-left: 4px solid #e5e7eb;
+            padding-left: 1em;
+            margin: 0.5em 0;
+            color: #6b7280;
+        }
+        /* Remove margins from first and last elements to avoid extra spacing */
+        .todo-content > *:first-child { margin-top: 0; }
+        .todo-content > *:last-child { margin-bottom: 0; }
+    </style>
 </head>
 <body class="bg-gray-50 min-h-screen">
     <div class="container mx-auto max-w-2xl px-4 py-8">
@@ -67,7 +109,7 @@
                 <input
                     type="text"
                     name="content"
-                    placeholder="What needs to be done?"
+                    placeholder="What needs to be done? (Markdown supported)"
                     class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
                     required
                 >
@@ -104,9 +146,9 @@
 
                             <!-- Todo Content -->
                             <div class="flex-1">
-                                <p class="{% if todo.is_done %}line-through text-gray-500{% else %}text-gray-800{% endif %}">
-                                    {{ todo.content }}
-                                </p>
+                                <div class="todo-content {% if todo.is_done %}line-through text-gray-500{% else %}text-gray-800{% endif %}"
+                                     data-content="{{ todo.content|escapejs }}">
+                                </div>
                                 <div class="text-sm text-gray-400 mt-1">
                                     <span>Created: {{ todo.created_at|date:"M d, Y g:i A" }}</span>
                                     {% if todo.marked_as_done_at %}
@@ -146,5 +188,21 @@
             <p>Built with Django & Tailwind CSS</p>
         </footer>
     </div>
+
+    <script>
+        // Render Markdown content for all todos
+        document.addEventListener('DOMContentLoaded', function() {
+            const todoContentElements = document.querySelectorAll('.todo-content');
+
+            todoContentElements.forEach(function(element) {
+                const markdownContent = element.getAttribute('data-content');
+                if (markdownContent) {
+                    // Parse and render markdown
+                    const htmlContent = marked.parse(markdownContent);
+                    element.innerHTML = htmlContent;
+                }
+            });
+        });
+    </script>
 </body>
 </html>
