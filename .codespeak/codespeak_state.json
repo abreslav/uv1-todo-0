@@ -67,7 +67,7 @@
             "web_application": true
         },
         "external_apis": "external_apis.json",
-        "commit_message": "Fix OAuth username constraint error for multiple users",
+        "commit_message": "Add Markdown support with inline editing",
         "methods_to_test_raw": "methods_to_test_raw.json",
         "methods_to_test": "methods_to_test.json",
         "test_reports": "test_reports.txt",
@@ -208,6 +208,10 @@
             {
                 "checkpoint": "{\"run\":{\"id\":\"e9d834cc-a6fb-48f9-bf7c-19c84cdd2230\",\"kind\":\"build\"},\"phase_id\":\"SetupProject\",\"additional_id\":null}",
                 "timestamp": "2025-10-09T13:50:07.891075+00:00"
+            },
+            {
+                "checkpoint": "{\"run\":{\"id\":\"e9d834cc-a6fb-48f9-bf7c-19c84cdd2230\",\"kind\":\"build\"},\"phase_id\":\"ImplementSpecWithClaudeCode\",\"additional_id\":null}",
+                "timestamp": "2025-10-09T13:52:33.570979+00:00"
             }
         ]
     }

@@ -50,3 +50,19 @@ def delete_todo(request, todo_id):
     todo.delete()
     messages.success(request, 'Todo deleted successfully!')
     return redirect('todo_list')
+
+@require_http_methods(["POST"])
+@login_required
+def edit_todo(request, todo_id):
+    """Edit a todo"""
+    todo = get_object_or_404(Todo, id=todo_id, user=request.user)
+
+    content = request.POST.get('content', '').strip()
+    if content:
+        todo.content = content
+        todo.save()
+        messages.success(request, 'Todo updated successfully!')
+    else:
+        messages.error(request, 'Todo content cannot be empty!')
+
+    return redirect('todo_list')

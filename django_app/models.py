@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+import markdown
+from django.utils.safestring import mark_safe
 
 class Todo(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='todos')
@@ -16,3 +18,9 @@ class Todo(models.Model):
     @property
     def is_done(self):
         return self.marked_as_done_at is not None
+
+    @property
+    def content_html(self):
+        """Render content as HTML from Markdown"""
+        md = markdown.Markdown(extensions=['nl2br', 'fenced_code'])
+        return mark_safe(md.convert(self.content))
