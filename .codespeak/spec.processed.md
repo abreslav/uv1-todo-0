@@ -1,6 +1,3 @@
-
-
-
 Todoer is a a personal ToDo app.
 
 ### Tech Stack
@@ -22,5 +19,12 @@ Todoer is a a personal ToDo app.
 ### User stories
 
 - add a new entry
+  - support Markdown
+    - in the text input, raw Markdown is displayed (no WYSIWYG)
+    - when saved, rendered Markdown is displayed
 - mark entry as Done (checkbox)
 - remove an entry
+
+### Non-functional requirements
+
+- Markdown is rendered on the client side using marked.js
