@@ -67,7 +67,7 @@
             "web_application": true
         },
         "external_apis": "external_apis.json",
-        "commit_message": "Fix OAuth username constraint error for multiple users",
+        "commit_message": "Add Markdown support with client-side rendering",
         "methods_to_test_raw": "methods_to_test_raw.json",
         "methods_to_test": "methods_to_test.json",
         "test_reports": "test_reports.txt",
@@ -208,6 +208,10 @@
             {
                 "checkpoint": "{\"run\":{\"id\":\"58144626-aaa3-4a07-9eb2-5d37e740a423\",\"kind\":\"build\"},\"phase_id\":\"SetupProject\",\"additional_id\":null}",
                 "timestamp": "2025-10-09T14:13:30.441269+00:00"
+            },
+            {
+                "checkpoint": "{\"run\":{\"id\":\"58144626-aaa3-4a07-9eb2-5d37e740a423\",\"kind\":\"build\"},\"phase_id\":\"ImplementSpecWithClaudeCode\",\"additional_id\":null}",
+                "timestamp": "2025-10-09T14:15:20.330905+00:00"
             }
         ]
     }

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Todoer - Personal Todo App</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -17,6 +18,89 @@
             }
         }
     </script>
+    <style>
+        /* Markdown content styling */
+        .markdown-content h1, .markdown-content h2, .markdown-content h3,
+        .markdown-content h4, .markdown-content h5, .markdown-content h6 {
+            font-weight: bold;
+            margin: 0.5em 0;
+        }
+        .markdown-content h1 { font-size: 1.5em; }
+        .markdown-content h2 { font-size: 1.25em; }
+        .markdown-content h3 { font-size: 1.125em; }
+
+        .markdown-content p {
+            margin: 0.5em 0;
+        }
+
+        .markdown-content ul, .markdown-content ol {
+            margin: 0.5em 0;
+            padding-left: 1.5em;
+        }
+
+        .markdown-content li {
+            margin: 0.25em 0;
+        }
+
+        .markdown-content code {
+            background-color: #f3f4f6;
+            padding: 0.125em 0.25em;
+            border-radius: 0.25em;
+            font-size: 0.875em;
+        }
+
+        .markdown-content pre {
+            background-color: #f3f4f6;
+            padding: 0.75em;
+            border-radius: 0.375em;
+            overflow-x: auto;
+            margin: 0.5em 0;
+        }
+
+        .markdown-content pre code {
+            background: none;
+            padding: 0;
+        }
+
+        .markdown-content blockquote {
+            border-left: 4px solid #d1d5db;
+            padding-left: 1em;
+            margin: 0.5em 0;
+            color: #6b7280;
+        }
+
+        .markdown-content strong {
+            font-weight: bold;
+        }
+
+        .markdown-content em {
+            font-style: italic;
+        }
+
+        .markdown-content a {
+            color: #3b82f6;
+            text-decoration: underline;
+        }
+
+        .markdown-content a:hover {
+            color: #2563eb;
+        }
+
+        .markdown-content table {
+            border-collapse: collapse;
+            margin: 0.5em 0;
+        }
+
+        .markdown-content th, .markdown-content td {
+            border: 1px solid #d1d5db;
+            padding: 0.5em;
+        }
+
+        .markdown-content th {
+            background-color: #f9fafb;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body class="bg-gray-50 min-h-screen">
     <div class="container mx-auto max-w-2xl px-4 py-8">
@@ -62,21 +146,23 @@
         <!-- Add Todo Form -->
         <div class="bg-white rounded-lg shadow-md p-6 mb-6">
             <h2 class="text-xl font-semibold text-gray-800 mb-4">Add New Todo</h2>
-            <form method="post" class="flex gap-3">
+            <form method="post" class="space-y-3">
                 {% csrf_token %}
-                <input
-                    type="text"
+                <textarea
                     name="content"
-                    placeholder="What needs to be done?"
-                    class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+                    placeholder="What needs to be done? (Markdown supported)"
+                    rows="3"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none resize-vertical"
                     required
-                >
-                <button
-                    type="submit"
-                    class="px-6 py-2 bg-primary text-white font-medium rounded-lg hover:bg-blue-600 transition-colors duration-200"
-                >
-                    Add Todo
-                </button>
+                ></textarea>
+                <div class="flex justify-end">
+                    <button
+                        type="submit"
+                        class="px-6 py-2 bg-primary text-white font-medium rounded-lg hover:bg-blue-600 transition-colors duration-200"
+                    >
+                        Add Todo
+                    </button>
+                </div>
             </form>
         </div>
 
@@ -104,9 +190,10 @@
 
                             <!-- Todo Content -->
                             <div class="flex-1">
-                                <p class="{% if todo.is_done %}line-through text-gray-500{% else %}text-gray-800{% endif %}">
-                                    {{ todo.content }}
-                                </p>
+                                <div class="markdown-content {% if todo.is_done %}line-through text-gray-500{% else %}text-gray-800{% endif %}"
+                                     data-markdown="{{ todo.content|escape }}">
+                                    <!-- Rendered markdown will be inserted here by JavaScript -->
+                                </div>
                                 <div class="text-sm text-gray-400 mt-1">
                                     <span>Created: {{ todo.created_at|date:"M d, Y g:i A" }}</span>
                                     {% if todo.marked_as_done_at %}
@@ -146,5 +233,28 @@
             <p>Built with Django & Tailwind CSS</p>
         </footer>
     </div>
+
+    <script>
+        // Render Markdown content on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Configure marked options
+            marked.setOptions({
+                breaks: true,
+                gfm: true,
+                sanitize: false, // We trust the user input since they can only edit their own todos
+                smartLists: true,
+                smartypants: false
+            });
+
+            // Find all markdown content elements and render them
+            document.querySelectorAll('.markdown-content').forEach(function(element) {
+                const markdownText = element.getAttribute('data-markdown');
+                if (markdownText) {
+                    // Render the markdown and insert it into the element
+                    element.innerHTML = marked.parse(markdownText);
+                }
+            });
+        });
+    </script>
 </body>
 </html>
