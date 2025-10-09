@@ -144,7 +144,6 @@ AUTHENTICATION_BACKENDS = [
 
 # Disable email/password registration - only social login
 ACCOUNT_EMAIL_VERIFICATION = 'none'
-ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_LOGIN_METHODS = {'email'}
 ACCOUNT_SIGNUP_FIELDS = ['email*']
 
