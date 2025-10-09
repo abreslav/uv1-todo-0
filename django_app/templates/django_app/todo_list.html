@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Todoer - Personal Todo App</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -62,21 +63,23 @@
         <!-- Add Todo Form -->
         <div class="bg-white rounded-lg shadow-md p-6 mb-6">
             <h2 class="text-xl font-semibold text-gray-800 mb-4">Add New Todo</h2>
-            <form method="post" class="flex gap-3">
+            <form method="post" class="space-y-3">
                 {% csrf_token %}
-                <input
-                    type="text"
+                <textarea
                     name="content"
-                    placeholder="What needs to be done?"
-                    class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+                    placeholder="What needs to be done? (Markdown supported)"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none resize-vertical"
+                    rows="3"
                     required
-                >
-                <button
-                    type="submit"
-                    class="px-6 py-2 bg-primary text-white font-medium rounded-lg hover:bg-blue-600 transition-colors duration-200"
-                >
-                    Add Todo
-                </button>
+                ></textarea>
+                <div class="flex justify-end">
+                    <button
+                        type="submit"
+                        class="px-6 py-2 bg-primary text-white font-medium rounded-lg hover:bg-blue-600 transition-colors duration-200"
+                    >
+                        Add Todo
+                    </button>
+                </div>
             </form>
         </div>
 
@@ -104,9 +107,9 @@
 
                             <!-- Todo Content -->
                             <div class="flex-1">
-                                <p class="{% if todo.is_done %}line-through text-gray-500{% else %}text-gray-800{% endif %}">
+                                <div class="markdown-content {% if todo.is_done %}line-through text-gray-500{% else %}text-gray-800{% endif %}" data-markdown="{{ todo.content|escape }}">
                                     {{ todo.content }}
-                                </p>
+                                </div>
                                 <div class="text-sm text-gray-400 mt-1">
                                     <span>Created: {{ todo.created_at|date:"M d, Y g:i A" }}</span>
                                     {% if todo.marked_as_done_at %}
@@ -146,5 +149,21 @@
             <p>Built with Django & Tailwind CSS</p>
         </footer>
     </div>
+
+    <script>
+        // Render Markdown content on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const markdownElements = document.querySelectorAll('.markdown-content');
+
+            markdownElements.forEach(function(element) {
+                const markdownText = element.getAttribute('data-markdown');
+                if (markdownText) {
+                    // Parse and render the markdown
+                    const renderedHtml = marked.parse(markdownText);
+                    element.innerHTML = renderedHtml;
+                }
+            });
+        });
+    </script>
 </body>
 </html>

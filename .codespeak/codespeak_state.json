@@ -67,7 +67,7 @@
             "web_application": true
         },
         "external_apis": "external_apis.json",
-        "commit_message": "Fix OAuth username constraint error for multiple users",
+        "commit_message": "Add Markdown support for todo content",
         "methods_to_test_raw": "methods_to_test_raw.json",
         "methods_to_test": "methods_to_test.json",
         "test_reports": "test_reports.txt",
@@ -208,6 +208,10 @@
             {
                 "checkpoint": "{\"run\":{\"id\":\"33c12e32-311a-4ec1-b5e0-70c61a4b397d\",\"kind\":\"build\"},\"phase_id\":\"SetupProject\",\"additional_id\":null}",
                 "timestamp": "2025-10-09T14:26:41.029800+00:00"
+            },
+            {
+                "checkpoint": "{\"run\":{\"id\":\"33c12e32-311a-4ec1-b5e0-70c61a4b397d\",\"kind\":\"build\"},\"phase_id\":\"ImplementSpecWithClaudeCode\",\"additional_id\":null}",
+                "timestamp": "2025-10-09T14:28:10.609653+00:00"
             }
         ]
     }
