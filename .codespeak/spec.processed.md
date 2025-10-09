@@ -14,12 +14,13 @@ Todoer is a a personal ToDo app.
   - created_at
   - marked_as_done_at
 
+### Users and permissions
+
+- users can sign in with Google (no email/password sign in)
+- every user sees only their own todo items
+
 ### User stories
 
 - add a new entry
 - mark entry as Done (checkbox)
 - remove an entry
-
-### Notes
-
-This app does not have any notion of a User. Whoever visits it can do all the actions, there's no auth.

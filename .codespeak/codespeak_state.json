@@ -47,12 +47,12 @@
             "desktop_application": false,
             "embedded_application": false,
             "has_django": true,
-            "has_external_apis": false,
+            "has_external_apis": true,
             "has_javascript": true,
             "has_node_js": false,
             "has_python": true,
             "has_server": true,
-            "has_social_logins": false,
+            "has_social_logins": true,
             "has_sql_database": true,
             "library": false,
             "mobile_application": false,
@@ -61,10 +61,11 @@
             "web_application": true
         },
         "external_apis": "external_apis.json",
-        "commit_message": "Implement Todoer personal Todo app with Django and Tailwind CSS",
+        "commit_message": "Add Google OAuth authentication with user-specific todos",
         "methods_to_test_raw": "methods_to_test_raw.json",
         "methods_to_test": "methods_to_test.json",
-        "test_reports": "test_reports.txt"
+        "test_reports": "test_reports.txt",
+        "spec_diff": "--- +++ @@ -14,12 +14,13 @@   - created_at\n   - marked_as_done_at\n \n+### Users and permissions\n+\n+- users can sign in with Google (no email/password sign in)\n+- every user sees only their own todo items\n+\n ### User stories\n \n - add a new entry\n - mark entry as Done (checkbox)\n-- remove an entry\n-\n-### Notes\n-\n-This app does not have any notion of a User. Whoever visits it can do all the actions, there's no auth.+- remove an entry"
     },
     "phase_manager": {
         "history": [
@@ -111,6 +112,50 @@
             {
                 "checkpoint": "{\"run\":{\"id\":\"2e347a15-9d2d-4fda-9ae4-6d8d4b3a8db4\",\"kind\":\"build\"},\"phase_id\":\"Done\",\"additional_id\":null}",
                 "timestamp": "2025-10-08T16:56:53.153642+00:00"
+            },
+            {
+                "checkpoint": "{\"run\":{\"id\":\"dad27b9d-821f-4a7a-ae6f-cf5730324c7c\",\"kind\":\"build\"},\"phase_id\":\"Init\",\"additional_id\":null}",
+                "timestamp": "2025-10-09T08:39:08.376797+00:00"
+            },
+            {
+                "checkpoint": "{\"run\":{\"id\":\"dad27b9d-821f-4a7a-ae6f-cf5730324c7c\",\"kind\":\"build\"},\"phase_id\":\"ProcessSpec\",\"additional_id\":null}",
+                "timestamp": "2025-10-09T08:39:08.415729+00:00"
+            },
+            {
+                "checkpoint": "{\"run\":{\"id\":\"dad27b9d-821f-4a7a-ae6f-cf5730324c7c\",\"kind\":\"build\"},\"phase_id\":\"EvaluateCriteria\",\"additional_id\":null}",
+                "timestamp": "2025-10-09T08:39:21.112800+00:00"
+            },
+            {
+                "checkpoint": "{\"run\":{\"id\":\"dad27b9d-821f-4a7a-ae6f-cf5730324c7c\",\"kind\":\"build\"},\"phase_id\":\"AnalyzeExternalApis\",\"additional_id\":null}",
+                "timestamp": "2025-10-09T08:39:36.952326+00:00"
+            },
+            {
+                "checkpoint": "{\"run\":{\"id\":\"dad27b9d-821f-4a7a-ae6f-cf5730324c7c\",\"kind\":\"build\"},\"phase_id\":\"CheckExternalApisConfigurationFile\",\"additional_id\":null}",
+                "timestamp": "2025-10-09T08:39:36.971197+00:00"
+            },
+            {
+                "checkpoint": "{\"run\":{\"id\":\"dad27b9d-821f-4a7a-ae6f-cf5730324c7c\",\"kind\":\"build\"},\"phase_id\":\"SetupProject\",\"additional_id\":null}",
+                "timestamp": "2025-10-09T08:39:38.341791+00:00"
+            },
+            {
+                "checkpoint": "{\"run\":{\"id\":\"dad27b9d-821f-4a7a-ae6f-cf5730324c7c\",\"kind\":\"build\"},\"phase_id\":\"ImplementSpecWithClaudeCode\",\"additional_id\":null}",
+                "timestamp": "2025-10-09T08:44:43.738418+00:00"
+            },
+            {
+                "checkpoint": "{\"run\":{\"id\":\"dad27b9d-821f-4a7a-ae6f-cf5730324c7c\",\"kind\":\"build\"},\"phase_id\":\"FeedbackLoopWithClaudeCode\",\"additional_id\":null}",
+                "timestamp": "2025-10-09T08:44:45.753752+00:00"
+            },
+            {
+                "checkpoint": "{\"run\":{\"id\":\"dad27b9d-821f-4a7a-ae6f-cf5730324c7c\",\"kind\":\"build\"},\"phase_id\":\"AnalyzeAndPlanTests\",\"additional_id\":null}",
+                "timestamp": "2025-10-09T08:44:57.024449+00:00"
+            },
+            {
+                "checkpoint": "{\"run\":{\"id\":\"dad27b9d-821f-4a7a-ae6f-cf5730324c7c\",\"kind\":\"build\"},\"phase_id\":\"GenerateAndRunTests\",\"additional_id\":null}",
+                "timestamp": "2025-10-09T08:48:31.197408+00:00"
+            },
+            {
+                "checkpoint": "{\"run\":{\"id\":\"dad27b9d-821f-4a7a-ae6f-cf5730324c7c\",\"kind\":\"build\"},\"phase_id\":\"Done\",\"additional_id\":null}",
+                "timestamp": "2025-10-09T08:48:31.215788+00:00"
             }
         ]
     }

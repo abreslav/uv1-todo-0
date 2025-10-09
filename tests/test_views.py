@@ -2,6 +2,7 @@ import pytest
 from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.messages import get_messages
+from django.contrib.auth.models import User
 from django.utils import timezone
 from django_app.models import Todo
 
@@ -12,6 +13,12 @@ class TestViews(TestCase):
     def setUp(self):
         """Set up test client and test data"""
         self.client = Client()
+        self.user = User.objects.create_user(
+            username='testuser',
+            email='test@example.com',
+            password='testpass123'
+        )
+        self.client.force_login(self.user)
 
     @pytest.mark.timeout(30)
     def test_delete_todo_endpoint(self):
@@ -20,7 +27,7 @@ class TestViews(TestCase):
         Original method FQN: delete_todo
         """
         # Create a todo to delete
-        todo = Todo.objects.create(content="Test todo to delete")
+        todo = Todo.objects.create(content="Test todo to delete", user=self.user)
         todo_id = todo.id
 
         # Ensure the todo exists
@@ -41,7 +48,7 @@ class TestViews(TestCase):
         # Since todo doesn't exist, this should return 404 - let's test with existing todo
 
         # Test with another todo
-        todo2 = Todo.objects.create(content="Another todo to delete")
+        todo2 = Todo.objects.create(content="Another todo to delete", user=self.user)
         response = self.client.post(reverse('delete_todo', args=[todo2.id]), follow=True)
 
         # Check the success message
@@ -64,8 +71,8 @@ class TestViews(TestCase):
         Original method FQN: todo_list
         """
         # Create some test todos
-        todo1 = Todo.objects.create(content="First todo")
-        todo2 = Todo.objects.create(content="Second todo", marked_as_done_at=timezone.now())
+        todo1 = Todo.objects.create(content="First todo", user=self.user)
+        todo2 = Todo.objects.create(content="Second todo", marked_as_done_at=timezone.now(), user=self.user)
 
         # Make GET request
         response = self.client.get(reverse('todo_list'))
@@ -139,7 +146,7 @@ class TestViews(TestCase):
         Original method FQN: toggle_todo
         """
         # Create a todo that is not done
-        todo = Todo.objects.create(content="Todo to toggle")
+        todo = Todo.objects.create(content="Todo to toggle", user=self.user)
         self.assertFalse(todo.is_done)
 
         # Toggle to done
@@ -166,7 +173,7 @@ class TestViews(TestCase):
         Test toggling done todo back to not done
         """
         # Create a todo that is done
-        todo = Todo.objects.create(content="Done todo to toggle", marked_as_done_at=timezone.now())
+        todo = Todo.objects.create(content="Done todo to toggle", marked_as_done_at=timezone.now(), user=self.user)
         self.assertTrue(todo.is_done)
 
         # Toggle to not done
@@ -194,3 +201,19 @@ class TestViews(TestCase):
         """
         response = self.client.post(reverse('toggle_todo', args=[9999]))
         self.assertEqual(response.status_code, 404)
+
+    @pytest.mark.timeout(30)
+    def test_todo_list_unauthenticated_user(self):
+        """
+        Test kind: endpoint_tests
+        Test todo_list view returns login template for unauthenticated users
+        """
+        # Log out the user to test unauthenticated access
+        self.client.logout()
+
+        # Make GET request without authentication
+        response = self.client.get(reverse('todo_list'))
+
+        # Check response status and template
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'django_app/login.html')
