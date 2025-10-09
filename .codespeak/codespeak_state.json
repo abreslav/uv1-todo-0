@@ -180,6 +180,10 @@
             {
                 "checkpoint": "{\"run\":{\"id\":\"72366fa6-9105-441b-8eda-f9b6ad998128\",\"kind\":\"change_request\"},\"phase_id\":\"ImplementChangeRequest\",\"additional_id\":null}",
                 "timestamp": "2025-10-09T12:28:01.105960+00:00"
+            },
+            {
+                "checkpoint": "{\"run\":{\"id\":\"72366fa6-9105-441b-8eda-f9b6ad998128\",\"kind\":\"change_request\"},\"phase_id\":\"Done\",\"additional_id\":null}",
+                "timestamp": "2025-10-09T12:28:01.129072+00:00"
             }
         ]
     }
