@@ -96,7 +96,7 @@ class TestTodo(TestCase):
         html_with_code = todo_code.content_html
 
         # Check that code blocks are converted properly
-        self.assertIn('<code>', html_with_code)
+        self.assertIn('<pre><code', html_with_code)
         self.assertIn('print(', html_with_code)
 
         # Test plain text (no markdown)
