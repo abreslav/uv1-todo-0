@@ -71,7 +71,7 @@
         "methods_to_test_raw": "methods_to_test_raw.json",
         "methods_to_test": "methods_to_test.json",
         "test_reports": "test_reports.txt",
-        "spec_diff": "--- +++ @@ -14,12 +14,13 @@   - created_at\n   - marked_as_done_at\n \n+### Users and permissions\n+\n+- users can sign in with Google (no email/password sign in)\n+- every user sees only their own todo items\n+\n ### User stories\n \n - add a new entry\n - mark entry as Done (checkbox)\n-- remove an entry\n-\n-### Notes\n-\n-This app does not have any notion of a User. Whoever visits it can do all the actions, there's no auth.+- remove an entry",
+        "spec_diff": "--- +++ @@ -1,6 +1,3 @@-\n-\n-\n Todoer is a a personal ToDo app.\n \n ### Tech Stack\n@@ -22,5 +19,13 @@ ### User stories\n \n - add a new entry\n+  - support Markdown\n+    - text input for new todo is single-line\n+    - in this text input, raw Markdown is entered (no WYSIWYG)\n+    - when saved, rendered Markdown is displayed\n - mark entry as Done (checkbox)\n-- remove an entry+- remove an entry\n+\n+### Non-functional requirements\n+\n+- Markdown is rendered on the client side using marked.js",
         "change_request": "",
         "implemented_change_requests": "implemented_change_requests.json"
     },
@@ -188,6 +188,10 @@
             {
                 "checkpoint": "{\"run\":{\"id\":\"2946674c-f6d0-4014-82b3-8586b37e08b0\",\"kind\":\"build\"},\"phase_id\":\"Init\",\"additional_id\":null}",
                 "timestamp": "2025-10-09T14:33:59.608434+00:00"
+            },
+            {
+                "checkpoint": "{\"run\":{\"id\":\"2946674c-f6d0-4014-82b3-8586b37e08b0\",\"kind\":\"build\"},\"phase_id\":\"ProcessSpec\",\"additional_id\":null}",
+                "timestamp": "2025-10-09T14:33:59.652398+00:00"
             }
         ]
     }
