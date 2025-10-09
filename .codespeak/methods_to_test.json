@@ -19,6 +19,22 @@
             "kind": "unit_tests"
         }
     ],
+    "django_app/signals.py": [
+        {
+            "method": {
+                "enclosing_classes": [],
+                "method_name": "_read_config_parameter"
+            },
+            "kind": "unit_tests"
+        },
+        {
+            "method": {
+                "enclosing_classes": [],
+                "method_name": "configure_social_apps"
+            },
+            "kind": "unit_tests"
+        }
+    ],
     "django_app/views.py": [
         {
             "method": {
