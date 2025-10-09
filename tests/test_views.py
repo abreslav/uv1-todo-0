@@ -201,3 +201,19 @@ class TestViews(TestCase):
         """
         response = self.client.post(reverse('toggle_todo', args=[9999]))
         self.assertEqual(response.status_code, 404)
+
+    @pytest.mark.timeout(30)
+    def test_todo_list_unauthenticated_user(self):
+        """
+        Test kind: endpoint_tests
+        Test todo_list view returns login template for unauthenticated users
+        """
+        # Log out the user to test unauthenticated access
+        self.client.logout()
+
+        # Make GET request without authentication
+        response = self.client.get(reverse('todo_list'))
+
+        # Check response status and template
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'django_app/login.html')
