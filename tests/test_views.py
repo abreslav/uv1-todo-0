@@ -217,3 +217,93 @@ class TestViews(TestCase):
         # Check response status and template
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'django_app/login.html')
+
+    @pytest.mark.timeout(30)
+    def test_edit_todo_endpoint_valid_content(self):
+        """
+        Test kind: endpoint_tests
+        Original method FQN: edit_todo
+        """
+        # Create a todo to edit
+        original_content = "Original todo content"
+        todo = Todo.objects.create(content=original_content, user=self.user)
+
+        # Edit the todo with valid content
+        new_content = "Updated todo content"
+        response = self.client.post(reverse('edit_todo', args=[todo.id]), {'content': new_content})
+
+        # Check redirect
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, reverse('todo_list'))
+
+        # Check todo was updated
+        todo.refresh_from_db()
+        self.assertEqual(todo.content, new_content)
+
+        # Check success message
+        response = self.client.post(reverse('edit_todo', args=[todo.id]), {'content': new_content}, follow=True)
+        messages = list(get_messages(response.wsgi_request))
+        self.assertTrue(any("Todo updated successfully!" in str(message) for message in messages))
+
+    @pytest.mark.timeout(30)
+    def test_edit_todo_endpoint_empty_content(self):
+        """
+        Test kind: endpoint_tests
+        Test edit_todo endpoint with empty content shows error
+        """
+        # Create a todo to edit
+        original_content = "Original todo content"
+        todo = Todo.objects.create(content=original_content, user=self.user)
+
+        # Try to edit with empty content
+        response = self.client.post(reverse('edit_todo', args=[todo.id]), {'content': ''}, follow=True)
+
+        # Check todo was not updated
+        todo.refresh_from_db()
+        self.assertEqual(todo.content, original_content)
+
+        # Check error message
+        messages = list(get_messages(response.wsgi_request))
+        self.assertTrue(any("Todo content cannot be empty!" in str(message) for message in messages))
+
+        # Try to edit with whitespace only
+        response = self.client.post(reverse('edit_todo', args=[todo.id]), {'content': '   '}, follow=True)
+
+        # Check todo was not updated
+        todo.refresh_from_db()
+        self.assertEqual(todo.content, original_content)
+
+        # Check error message
+        messages = list(get_messages(response.wsgi_request))
+        self.assertTrue(any("Todo content cannot be empty!" in str(message) for message in messages))
+
+    @pytest.mark.timeout(30)
+    def test_edit_todo_endpoint_nonexistent(self):
+        """
+        Test kind: endpoint_tests
+        Test editing non-existent todo returns 404
+        """
+        response = self.client.post(reverse('edit_todo', args=[9999]), {'content': 'New content'})
+        self.assertEqual(response.status_code, 404)
+
+    @pytest.mark.timeout(30)
+    def test_edit_todo_endpoint_different_user(self):
+        """
+        Test kind: endpoint_tests
+        Test editing todo belonging to different user returns 404
+        """
+        # Create another user and their todo
+        other_user = User.objects.create_user(
+            username='otheruser',
+            email='other@example.com',
+            password='otherpass123'
+        )
+        other_todo = Todo.objects.create(content="Other user's todo", user=other_user)
+
+        # Try to edit other user's todo with current user
+        response = self.client.post(reverse('edit_todo', args=[other_todo.id]), {'content': 'Hacked content'})
+        self.assertEqual(response.status_code, 404)
+
+        # Verify the todo wasn't changed
+        other_todo.refresh_from_db()
+        self.assertEqual(other_todo.content, "Other user's todo")
