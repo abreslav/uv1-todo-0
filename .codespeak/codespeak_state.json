@@ -204,6 +204,10 @@
             {
                 "checkpoint": "{\"run\":{\"id\":\"33c12e32-311a-4ec1-b5e0-70c61a4b397d\",\"kind\":\"build\"},\"phase_id\":\"CheckExternalApisConfigurationFile\",\"additional_id\":null}",
                 "timestamp": "2025-10-09T14:26:34.699438+00:00"
+            },
+            {
+                "checkpoint": "{\"run\":{\"id\":\"33c12e32-311a-4ec1-b5e0-70c61a4b397d\",\"kind\":\"build\"},\"phase_id\":\"SetupProject\",\"additional_id\":null}",
+                "timestamp": "2025-10-09T14:26:41.029800+00:00"
             }
         ]
     }
