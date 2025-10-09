@@ -72,7 +72,7 @@
         "methods_to_test": "methods_to_test.json",
         "test_reports": "test_reports.txt",
         "spec_diff": "--- +++ @@ -22,5 +22,12 @@ ### User stories\n \n - add a new entry\n+  - support Markdown\n+    - in the edit box, raw Markdown is displayed (no WYSIWYG)\n+    - when saved, rendered Markdown is displayed\n - mark entry as Done (checkbox)\n-- remove an entry+- remove an entry\n+\n+### Non-functional requirements\n+\n+- Markdown is rendered on the client side using marked.js",
-        "change_request": "",
+        "change_request": "Make the edit box for creating todo items single-line",
         "implemented_change_requests": "implemented_change_requests.json"
     },
     "phase_manager": {
@@ -232,6 +232,10 @@
             {
                 "checkpoint": "{\"run\":{\"id\":\"18d9cff9-2191-4d46-8290-38123942e58e\",\"kind\":\"change_request\"},\"phase_id\":\"Init\",\"additional_id\":null}",
                 "timestamp": "2025-10-09T14:19:53.139556+00:00"
+            },
+            {
+                "checkpoint": "{\"run\":{\"id\":\"18d9cff9-2191-4d46-8290-38123942e58e\",\"kind\":\"change_request\"},\"phase_id\":\"ProcessChangeRequest\",\"additional_id\":null}",
+                "timestamp": "2025-10-09T14:19:53.160039+00:00"
             }
         ]
     }
