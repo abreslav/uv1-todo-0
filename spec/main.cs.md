@@ -7,6 +7,7 @@ These lines are ignored too. -->
 Todoer is a a personal ToDo app.
 
 ### Tech Stack
+
 - Django
 - Tailwind CSS
 
@@ -25,5 +26,9 @@ Todoer is a a personal ToDo app.
 ### User stories
 
 - add a new entry
+  - support Markdown
+    - when editing an entry, raw Markdown is displayed (no WYSIWYG)
+    - when saved, rendered Markdown is deisplayed
+    - a legend for basic Markdown syntax is displayed under the edit box
 - mark entry as Done (checkbox)
 - remove an entry
