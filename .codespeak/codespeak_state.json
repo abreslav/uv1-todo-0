@@ -272,6 +272,10 @@
             {
                 "checkpoint": "{\"run\":{\"id\":\"c5797a51-6d75-40d7-b59e-ce9d1333a8c8\",\"kind\":\"build\"},\"phase_id\":\"Done\",\"additional_id\":null}",
                 "timestamp": "2025-10-10T11:18:57.377732+00:00"
+            },
+            {
+                "checkpoint": "{\"run\":{\"id\":\"cb8382f3-0dd5-4468-a24f-eb1ada70b721\",\"kind\":\"change_request\"},\"phase_id\":\"Init\",\"additional_id\":null}",
+                "timestamp": "2025-10-10T15:39:56.533036+00:00"
             }
         ]
     }
