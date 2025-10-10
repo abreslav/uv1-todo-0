@@ -67,7 +67,7 @@
             "web_application": true
         },
         "external_apis": "external_apis.json",
-        "commit_message": "Add Markdown support for todo content",
+        "commit_message": "Add trash functionality with restore capability",
         "methods_to_test_raw": "methods_to_test_raw.json",
         "methods_to_test": "methods_to_test.json",
         "test_reports": "test_reports.txt",
@@ -252,6 +252,10 @@
             {
                 "checkpoint": "{\"run\":{\"id\":\"c5797a51-6d75-40d7-b59e-ce9d1333a8c8\",\"kind\":\"build\"},\"phase_id\":\"SetupProject\",\"additional_id\":null}",
                 "timestamp": "2025-10-10T11:13:18.563467+00:00"
+            },
+            {
+                "checkpoint": "{\"run\":{\"id\":\"c5797a51-6d75-40d7-b59e-ce9d1333a8c8\",\"kind\":\"build\"},\"phase_id\":\"ImplementSpecWithClaudeCode\",\"additional_id\":null}",
+                "timestamp": "2025-10-10T11:16:47.218460+00:00"
             }
         ]
     }
