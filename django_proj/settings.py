@@ -157,6 +157,24 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 ACCOUNT_LOGOUT_REDIRECT_URL = '/'
 
+# HTTPS and Security Settings
+# These settings ensure proper HTTPS handling, especially important for OAuth redirects
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT = os.environ.get('SECURE_SSL_REDIRECT', '').lower() == 'true'
+USE_TLS = os.environ.get('USE_TLS', '').lower() == 'true'
+
+# Force HTTPS in URLs when USE_TLS is enabled
+# This is crucial for OAuth providers that require HTTPS redirect URIs
+if USE_TLS:
+    # Force HTTPS scheme for all URL generation
+    os.environ['DJANGO_HTTPS'] = 'on'
+    # Set secure session and CSRF cookies
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    # Set secure headers
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    SECURE_BROWSER_XSS_FILTER = True
+
 # Google OAuth specific settings
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
