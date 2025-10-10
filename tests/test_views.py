@@ -40,20 +40,21 @@ class TestViews(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, reverse('todo_list'))
 
-        # Check todo was deleted
-        self.assertFalse(Todo.objects.filter(id=todo_id).exists())
+        # Check todo was moved to trash (not deleted from database)
+        self.assertTrue(Todo.objects.filter(id=todo_id).exists())
 
-        # Follow the redirect to check for success message
-        response = self.client.post(reverse('delete_todo', args=[todo_id]), follow=True)
-        # Since todo doesn't exist, this should return 404 - let's test with existing todo
+        # Refresh from database and check todo is marked as deleted
+        todo.refresh_from_db()
+        self.assertTrue(todo.is_deleted)
+        self.assertIsNotNone(todo.deleted_at)
 
-        # Test with another todo
+        # Test with another todo to check success message
         todo2 = Todo.objects.create(content="Another todo to delete", user=self.user)
         response = self.client.post(reverse('delete_todo', args=[todo2.id]), follow=True)
 
         # Check the success message
         messages = list(get_messages(response.wsgi_request))
-        self.assertTrue(any("Todo deleted successfully!" in str(message) for message in messages))
+        self.assertTrue(any("Todo moved to trash!" in str(message) for message in messages))
 
     @pytest.mark.timeout(30)
     def test_delete_todo_nonexistent(self):
