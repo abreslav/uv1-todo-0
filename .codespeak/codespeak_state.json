@@ -72,7 +72,7 @@
         "methods_to_test": "methods_to_test.json",
         "test_reports": "test_reports.txt",
         "spec_diff": "--- +++ @@ -24,7 +24,10 @@     - in this text input, raw Markdown is entered (no WYSIWYG)\n     - when saved, rendered Markdown is displayed\n - mark entry as Done (checkbox)\n-- remove an entry\n+- remove an entry (move to Trash)\n+- restore an entry from the Trash\n+  - separate screen for deleted entries\n+  - \"Restore\" button for each deleted entry\n \n ### Non-functional requirements\n \n",
-        "change_request": "",
+        "change_request": "When logging in with google, I'm getting an error because the redirect url is using http, not https as configured (see .env.local/env vars)",
         "implemented_change_requests": "implemented_change_requests.json"
     },
     "phase_manager": {
@@ -276,6 +276,10 @@
             {
                 "checkpoint": "{\"run\":{\"id\":\"cb8382f3-0dd5-4468-a24f-eb1ada70b721\",\"kind\":\"change_request\"},\"phase_id\":\"Init\",\"additional_id\":null}",
                 "timestamp": "2025-10-10T15:39:56.533036+00:00"
+            },
+            {
+                "checkpoint": "{\"run\":{\"id\":\"cb8382f3-0dd5-4468-a24f-eb1ada70b721\",\"kind\":\"change_request\"},\"phase_id\":\"ProcessChangeRequest\",\"additional_id\":null}",
+                "timestamp": "2025-10-10T15:39:56.556839+00:00"
             }
         ]
     }
