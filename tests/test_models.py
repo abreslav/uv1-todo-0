@@ -66,3 +66,30 @@ class TestTodo(TestCase):
         todo_becomes_done.marked_as_done_at = None
         todo_becomes_done.save()
         self.assertFalse(todo_becomes_done.is_done)
+
+    @pytest.mark.timeout(30)
+    def test_todo_is_deleted_property(self):
+        """
+        Test kind: unit_tests
+        Original method FQN: Todo.is_deleted
+        """
+        # Test todo that is not deleted (deleted_at is None)
+        todo_not_deleted = Todo.objects.create(content="Test todo not deleted", user=self.user)
+        self.assertFalse(todo_not_deleted.is_deleted)
+
+        # Test todo that is deleted (deleted_at is set)
+        todo_deleted = Todo.objects.create(content="Test todo deleted", deleted_at=timezone.now(), user=self.user)
+        self.assertTrue(todo_deleted.is_deleted)
+
+        # Test todo that becomes deleted
+        todo_becomes_deleted = Todo.objects.create(content="Test todo becomes deleted", user=self.user)
+        self.assertFalse(todo_becomes_deleted.is_deleted)
+
+        todo_becomes_deleted.deleted_at = timezone.now()
+        todo_becomes_deleted.save()
+        self.assertTrue(todo_becomes_deleted.is_deleted)
+
+        # Test todo that becomes not deleted again
+        todo_becomes_deleted.deleted_at = None
+        todo_becomes_deleted.save()
+        self.assertFalse(todo_becomes_deleted.is_deleted)

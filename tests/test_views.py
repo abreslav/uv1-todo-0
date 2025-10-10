@@ -217,3 +217,139 @@ class TestViews(TestCase):
         # Check response status and template
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'django_app/login.html')
+
+    @pytest.mark.timeout(30)
+    def test_trash_endpoint(self):
+        """
+        Test kind: endpoint_tests
+        Original method FQN: trash
+        """
+        # Create some todos - some deleted, some not
+        todo_active = Todo.objects.create(content="Active todo", user=self.user)
+        todo_deleted1 = Todo.objects.create(content="Deleted todo 1", user=self.user, deleted_at=timezone.now())
+        todo_deleted2 = Todo.objects.create(content="Deleted todo 2", user=self.user, deleted_at=timezone.now())
+
+        # Make GET request to trash endpoint
+        response = self.client.get(reverse('trash'))
+
+        # Check response
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'django_app/trash.html')
+
+        # Check context contains only deleted todos
+        self.assertIn('deleted_todos', response.context)
+        deleted_todos = response.context['deleted_todos']
+        self.assertEqual(deleted_todos.count(), 2)
+
+        # Check that active todo is not in the trash
+        deleted_todo_ids = [todo.id for todo in deleted_todos]
+        self.assertNotIn(todo_active.id, deleted_todo_ids)
+        self.assertIn(todo_deleted1.id, deleted_todo_ids)
+        self.assertIn(todo_deleted2.id, deleted_todo_ids)
+
+        # Check that the page contains deleted todos content
+        self.assertContains(response, "Deleted todo 1")
+        self.assertContains(response, "Deleted todo 2")
+        self.assertNotContains(response, "Active todo")
+
+    @pytest.mark.timeout(30)
+    def test_trash_endpoint_unauthenticated(self):
+        """
+        Test kind: endpoint_tests
+        Test trash view requires authentication
+        """
+        # Log out the user
+        self.client.logout()
+
+        # Make GET request to trash without authentication
+        response = self.client.get(reverse('trash'))
+
+        # Check that user is redirected to login
+        self.assertEqual(response.status_code, 302)
+        self.assertIn('/accounts/login/', response.url)
+
+    @pytest.mark.timeout(30)
+    def test_restore_todo_endpoint(self):
+        """
+        Test kind: endpoint_tests
+        Original method FQN: restore_todo
+        """
+        # Create a deleted todo
+        todo = Todo.objects.create(
+            content="Todo to restore",
+            user=self.user,
+            deleted_at=timezone.now()
+        )
+        self.assertTrue(todo.is_deleted)
+
+        # Make POST request to restore the todo
+        response = self.client.post(reverse('restore_todo', args=[todo.id]))
+
+        # Check response is redirect to trash
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, reverse('trash'))
+
+        # Refresh from database and check todo is restored
+        todo.refresh_from_db()
+        self.assertFalse(todo.is_deleted)
+        self.assertIsNone(todo.deleted_at)
+
+        # Follow redirect to check success message
+        response = self.client.post(reverse('restore_todo', args=[todo.id]), follow=True)
+        # Note: This will fail since the todo is no longer deleted, but let's test with a fresh deleted todo
+
+        # Create another deleted todo to test success message
+        todo2 = Todo.objects.create(
+            content="Another todo to restore",
+            user=self.user,
+            deleted_at=timezone.now()
+        )
+        response = self.client.post(reverse('restore_todo', args=[todo2.id]), follow=True)
+        messages = list(get_messages(response.wsgi_request))
+        self.assertTrue(any("Todo restored successfully!" in str(message) for message in messages))
+
+    @pytest.mark.timeout(30)
+    def test_restore_todo_nonexistent(self):
+        """
+        Test kind: endpoint_tests
+        Test restoring non-existent todo returns 404
+        """
+        response = self.client.post(reverse('restore_todo', args=[9999]))
+        self.assertEqual(response.status_code, 404)
+
+    @pytest.mark.timeout(30)
+    def test_restore_todo_not_deleted(self):
+        """
+        Test kind: endpoint_tests
+        Test restoring non-deleted todo returns 404
+        """
+        # Create a todo that is not deleted
+        todo = Todo.objects.create(content="Active todo", user=self.user)
+        self.assertFalse(todo.is_deleted)
+
+        # Try to restore it - should return 404 since it's not in trash
+        response = self.client.post(reverse('restore_todo', args=[todo.id]))
+        self.assertEqual(response.status_code, 404)
+
+    @pytest.mark.timeout(30)
+    def test_restore_todo_unauthenticated(self):
+        """
+        Test kind: endpoint_tests
+        Test restore_todo view requires authentication
+        """
+        # Create a deleted todo
+        todo = Todo.objects.create(
+            content="Deleted todo",
+            user=self.user,
+            deleted_at=timezone.now()
+        )
+
+        # Log out the user
+        self.client.logout()
+
+        # Try to restore without authentication
+        response = self.client.post(reverse('restore_todo', args=[todo.id]))
+
+        # Check that user is redirected to login
+        self.assertEqual(response.status_code, 302)
+        self.assertIn('/accounts/login/', response.url)
