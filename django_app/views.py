@@ -13,7 +13,7 @@ def todo_list(request):
     if not request.user.is_authenticated:
         return render(request, 'django_app/login.html')
 
-    todos = Todo.objects.filter(user=request.user)
+    todos = Todo.objects.filter(user=request.user, deleted_at__isnull=True)
 
     if request.method == 'POST':
         content = request.POST.get('content', '').strip()
@@ -45,8 +45,25 @@ def toggle_todo(request, todo_id):
 @require_http_methods(["POST"])
 @login_required
 def delete_todo(request, todo_id):
-    """Delete a todo"""
+    """Move a todo to trash"""
     todo = get_object_or_404(Todo, id=todo_id, user=request.user)
-    todo.delete()
-    messages.success(request, 'Todo deleted successfully!')
+    todo.deleted_at = timezone.now()
+    todo.save()
+    messages.success(request, 'Todo moved to trash!')
     return redirect('todo_list')
+
+@login_required
+def trash(request):
+    """View showing deleted todos"""
+    deleted_todos = Todo.objects.filter(user=request.user, deleted_at__isnull=False)
+    return render(request, 'django_app/trash.html', {'deleted_todos': deleted_todos})
+
+@require_http_methods(["POST"])
+@login_required
+def restore_todo(request, todo_id):
+    """Restore a todo from trash"""
+    todo = get_object_or_404(Todo, id=todo_id, user=request.user, deleted_at__isnull=False)
+    todo.deleted_at = None
+    todo.save()
+    messages.success(request, 'Todo restored successfully!')
+    return redirect('trash')

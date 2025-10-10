@@ -14,6 +14,15 @@
                 "enclosing_classes": [
                     "Todo"
                 ],
+                "method_name": "is_deleted"
+            },
+            "kind": "unit_tests"
+        },
+        {
+            "method": {
+                "enclosing_classes": [
+                    "Todo"
+                ],
                 "method_name": "is_done"
             },
             "kind": "unit_tests"
@@ -48,6 +57,13 @@
         {
             "method": {
                 "enclosing_classes": [],
+                "method_name": "restore_todo"
+            },
+            "kind": "endpoint_tests"
+        },
+        {
+            "method": {
+                "enclosing_classes": [],
                 "method_name": "todo_list"
             },
             "kind": "endpoint_tests"
@@ -56,6 +72,13 @@
             "method": {
                 "enclosing_classes": [],
                 "method_name": "toggle_todo"
+            },
+            "kind": "endpoint_tests"
+        },
+        {
+            "method": {
+                "enclosing_classes": [],
+                "method_name": "trash"
             },
             "kind": "endpoint_tests"
         }

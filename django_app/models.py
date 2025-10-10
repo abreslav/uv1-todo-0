@@ -6,6 +6,7 @@ class Todo(models.Model):
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     marked_as_done_at = models.DateTimeField(null=True, blank=True)
+    deleted_at = models.DateTimeField(null=True, blank=True)
 
     class Meta:
         ordering = ['-created_at']  # Show newest first
@@ -16,3 +17,7 @@ class Todo(models.Model):
     @property
     def is_done(self):
         return self.marked_as_done_at is not None
+
+    @property
+    def is_deleted(self):
+        return self.deleted_at is not None

@@ -24,7 +24,10 @@ Todoer is a a personal ToDo app.
     - in this text input, raw Markdown is entered (no WYSIWYG)
     - when saved, rendered Markdown is displayed
 - mark entry as Done (checkbox)
-- remove an entry
+- remove an entry (move to Trash)
+- restore an entry from the Trash
+  - separate screen for deleted entries
+  - "Restore" button for each deleted entry
 
 ### Non-functional requirements
 
