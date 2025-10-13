@@ -1,5 +1,16 @@
-Quick Start
-===========
+Todoer
+======
+
+Example todo app built with CodeSpeak:
+
+<img width="658" height="517" alt="image" src="https://github.com/user-attachments/assets/aa0e8223-8254-4691-aaab-826945251f00" />
+
+Features social login with Google:
+
+<img width="499" height="415" alt="image" src="https://github.com/user-attachments/assets/c420fe3d-09d8-45e0-8eea-f74ff7668657" />
+
+CodeSpeak Quick Start
+=====================
 
 <sub>Note: find detailed docs at https://codespeak.dev/alpha_0.0.1</sub>
 
